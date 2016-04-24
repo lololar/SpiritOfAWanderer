@@ -9,6 +9,7 @@ public class PlayerPhysics : Moving {
 
     public override void Start()
     {
+        StartCoroutine(InputHandler());
         base.Start();
     }
 
@@ -18,7 +19,7 @@ public class PlayerPhysics : Moving {
         {
             float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");
-            bool isJumping = Input.GetButtonDown("Jump");
+            bool isJumping = Input.GetButton("Jump");
 
             if(isJumping && !_isFalling)
             {

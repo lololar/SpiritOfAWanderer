@@ -12,4 +12,9 @@ public class Values {
         return new Vector3(l.x * r.x, l.y * r.y, l.z * r.z);
     }
 
+    public static Vector3 Absolute(Vector3 nabs)
+    {
+        return new Vector3(Mathf.Abs(nabs.x), Mathf.Abs(nabs.y), Mathf.Abs(nabs.z));
+    }
+
 }

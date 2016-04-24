@@ -6,6 +6,7 @@ public class Moving : MonoBehaviour {
 
     public float _tileSize = 0.16f;
     public Vector3 _size;
+    public float _mass = 1.0f;
 
     public float _slow = 1.0f;
 
@@ -14,15 +15,13 @@ public class Moving : MonoBehaviour {
     public bool _isAlive = true; 
     public bool _isFalling = true;
     public bool _isMoving = false;
-
-    public Coroutine _fallCor;
+    
     public Coroutine _moveCor;
     public Coroutine _collCor;
     public float _timeBetweenPhysicsFrames = 0.05f;
 
 
     public virtual void Start () {
-        _fallCor = StartCoroutine(Falling());
         _moveCor = StartCoroutine(MovePhysics());
         _moveCor = StartCoroutine(CollisionCor());
 	}
@@ -44,72 +43,93 @@ public class Moving : MonoBehaviour {
             yield return new WaitForSeconds(_timeBetweenPhysicsFrames);
         }
     }
-    protected IEnumerator Falling()
-    {
-        while (_isAlive)
-        {
-            FallingAction();
-            yield return new WaitForSeconds(_timeBetweenPhysicsFrames);
-        }
-    }
 
     private void CollisionAction()
     {
-        //Debug.Log((_velocity * _timeBetweenPhysicsFrames).ToString("F4"));
-        //Debug.Log(_timeBetweenPhysicsFrames);
         CheckCollision(Values.Multiply(_velocity * _timeBetweenPhysicsFrames, Vector3.up));
-        //CheckCollision(Values.Multiply(_velocity * _timeBetweenPhysicsFrames, Vector3.left));
+        CheckCollision(Values.Multiply(_velocity * _timeBetweenPhysicsFrames, Vector3.right));
     }
 
     private void MoveAction()
     {
-        transform.position += _velocity * _timeBetweenPhysicsFrames;
-    }
-
-    private void FallingAction()
-    {
         if(_isFalling)
         {
-            _velocity = _velocity / _slow + GameManager._gravity * _timeBetweenPhysicsFrames;
+            _velocity = new Vector3(_velocity.x, _velocity.y + GameManager._gravity.y * _timeBetweenPhysicsFrames * _mass, _velocity.z);
         }
+        if(Mathf.Abs(_velocity.x) < Values.EPSYLON)
+        {
+            _velocity.x = 0.0f;
+        }
+        else
+        {
+            _velocity = new Vector3(_velocity.x / _slow, _velocity.y, _velocity.z);
+        }
+        transform.position += _velocity * _timeBetweenPhysicsFrames;
     }
 
     protected virtual void CheckCollision(Vector3 direction)
     {
-        //Debug.Log(direction);
         bool hasCollided = false;
-        //Debug.Log(transform.localScale.ToString("F4"));
-        Vector3 collisionPoint = transform.position + Values.Multiply(transform.localScale, direction.normalized);
-        //Debug.Log("Position : " + transform.position.ToString("F4") + " ///////// Collision detection : " + collisionPoint.ToString("F4"));
+        Vector3 collisionPoint = transform.position + Values.Multiply(transform.localScale / 2, direction.normalized);
+        Vector3 collisionPointRU = transform.position + transform.localScale / 2;
+        Vector3 collisionPointLD = transform.position - transform.localScale / 2;
         for (int i = 0; i < PhysicalObjectManager.GetInstance._staticObjects.Count; i++)
         {
             Static stat = PhysicalObjectManager.GetInstance._staticObjects[i];
-            hasCollided = !hasCollided || Collide(direction, collisionPoint, stat.gameObject);
+            /*if(Collide(direction, collisionPointRU, collisionPointLD, stat.gameObject) && !hasCollided)
+            {
+                hasCollided = true;
+            }*/
+            if((Collide(direction, collisionPoint, stat.gameObject)) && !hasCollided)
+            {
+                hasCollided = true;
+            }
         }
         for (int i = 0; i < PhysicalObjectManager.GetInstance._movingObjects.Count; i++)
         {
+            Debug.Log(i);
             Moving move = PhysicalObjectManager.GetInstance._movingObjects[i];
             if(move == this)
             {
+                Debug.Log(move);
                 continue;
             }
-            hasCollided = !hasCollided || Collide(direction, collisionPoint, move.gameObject);
+            /*if (Collide(direction, collisionPointRU, collisionPointLD, move.gameObject) && !hasCollided)
+            {
+                hasCollided = true;
+            }*/
+            if ((Collide(direction, collisionPoint, move.gameObject)) && !hasCollided)
+            {
+                hasCollided = true;
+            }
         }
-        if(Mathf.Abs(direction.y) > Values.EPSYLON)
+        _isFalling = !hasCollided;
+    }
+
+    private bool Collide(Vector3 direction, Vector3 collisionPointRU, Vector3 collisionPointLD, GameObject other)
+    {
+        Vector3 RU = other.transform.position + other.transform.localScale / 2;
+        Vector3 LD = other.transform.position - other.transform.localScale / 2;
+        if (SquaresOverlap(collisionPointRU, collisionPointLD, RU, LD))
         {
-            _isFalling = !hasCollided;
+            transform.position = (transform.position - Values.Multiply(transform.position, -direction.normalized))
+                - Values.Multiply(transform.localScale / 2 + other.transform.localScale / 2 + other.transform.position, direction.normalized);
+            _velocity -= Values.Multiply(_velocity, -direction.normalized);
+            return true;
         }
+        return false;
     }
 
     private bool Collide(Vector3 direction, Vector3 collisionPoint, GameObject other)
     {
-        Vector3 RU = other.transform.position + other.transform.localScale;
-        Vector3 LD = other.transform.position - other.transform.localScale;
+        Vector3 RU = other.transform.position + other.transform.localScale / 2;
+        Vector3 LD = other.transform.position - other.transform.localScale / 2;
         if (IsPointInSquare(collisionPoint, RU, LD))
         {
-            Debug.Log("Collision");
-            transform.position = Values.Multiply(transform.localScale + other.transform.localScale, -direction.normalized) + other.transform.position;
-            _velocity = Values.Multiply(_velocity, Vector3.one - direction.normalized);
+            transform.position = (transform.position - Values.Multiply(transform.position, -direction.normalized))
+                + Values.Multiply(transform.localScale / 2 + other.transform.localScale / 2, -direction.normalized)
+                + Values.Multiply(other.transform.position, Values.Absolute(direction.normalized));
+            _velocity -= Values.Multiply(_velocity, - direction.normalized);
             return true;
         }
         return false;
@@ -117,11 +137,12 @@ public class Moving : MonoBehaviour {
 
     protected bool IsPointInSquare(Vector3 pt, Vector3 sqrRU, Vector3 sqrLD)
     {
-        Debug.Log("Collision : ");
-        Debug.Log("PT : " + pt);
-        Debug.Log("RU : " + sqrRU);
-        Debug.Log("LD : " + sqrLD);
-        return pt.x < sqrRU.x && pt.y < sqrRU.y && pt.x > sqrLD.x && pt.y > sqrLD.y;
+        return pt.x <= sqrRU.x && pt.y <= sqrRU.y && pt.x >= sqrLD.x && pt.y >= sqrLD.y;
+    }
+
+    protected bool SquaresOverlap(Vector3 sqr1RU, Vector3 sqr1LD, Vector3 sqr2RU, Vector3 sqr2LD)
+    {
+        return sqr1LD.x < sqr2RU.x && sqr1RU.x > sqr2LD.x && sqr1LD.y < sqr2RU.y && sqr1RU.y > sqr2LD.y;
     }
 
     protected void AddForce(Vector3 force)
