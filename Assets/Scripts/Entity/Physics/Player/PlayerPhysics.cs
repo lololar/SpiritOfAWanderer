@@ -35,11 +35,11 @@ public class PlayerPhysics : Moving {
 
     void Jump()
     {
-        AddForce(Vector3.up * _jumpPower);
+        AddForce(Vector3.up * _jumpPower * _timeBetInputHandle);
     }
 
     void Move(float horizontal)
     {
-        AddForce(Vector3.right * horizontal * _speed);
+        AddForce(Vector3.right * horizontal * _speed * _timeBetInputHandle);
     }
 }

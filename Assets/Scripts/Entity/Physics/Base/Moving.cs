@@ -19,7 +19,7 @@ public class Moving : MonoBehaviour {
     public Coroutine _moveCor;
     public Coroutine _collCor;
     public float _timeBetweenPhysicsFrames = 0.05f;
-
+    public float _collidePrecision = 0.08f;
 
     public virtual void Start () {
         _moveCor = StartCoroutine(MovePhysics());
@@ -62,7 +62,7 @@ public class Moving : MonoBehaviour {
         }
         else
         {
-            _velocity = new Vector3(_velocity.x / _slow, _velocity.y, _velocity.z);
+            _velocity = new Vector3(_velocity.x - _velocity.x / _slow * _timeBetweenPhysicsFrames, _velocity.y, _velocity.z);
         }
         transform.position += _velocity * _timeBetweenPhysicsFrames;
     }
@@ -70,37 +70,49 @@ public class Moving : MonoBehaviour {
     protected virtual void CheckCollision(Vector3 direction)
     {
         bool hasCollided = false;
-        Vector3 collisionPoint = transform.position + Values.Multiply(transform.localScale / 2, direction.normalized);
         Vector3 collisionPointRU = transform.position + transform.localScale / 2;
         Vector3 collisionPointLD = transform.position - transform.localScale / 2;
         for (int i = 0; i < PhysicalObjectManager.GetInstance._staticObjects.Count; i++)
         {
             Static stat = PhysicalObjectManager.GetInstance._staticObjects[i];
-            /*if(Collide(direction, collisionPointRU, collisionPointLD, stat.gameObject) && !hasCollided)
+            float size = Values.Multiply(transform.localScale, Values.Absolute(direction.normalized) + Vector3.forward).magnitude;
+            Vector3 collisionPointStart = transform.position + Values.Multiply(transform.localScale / 2, Vector3.one - Values.Absolute(direction.normalized) - Vector3.forward);
+            for (float j = 0.0f; j < size; j+= _collidePrecision)
             {
-                hasCollided = true;
-            }*/
-            if((Collide(direction, collisionPoint, stat.gameObject)) && !hasCollided)
-            {
-                hasCollided = true;
+                /*//*
+                if (Collide(direction, collisionPointRU, collisionPointLD, stat.gameObject) && !hasCollided)
+                {
+                    hasCollided = true;
+                }
+                /*/if ((Collide(direction, collisionPointStart, stat.gameObject)) && !hasCollided)
+                {
+                    hasCollided = true;
+                }//*/
+                collisionPointStart += (Vector3.one - Values.Absolute(direction.normalized) + Vector3.forward) * _collidePrecision;
             }
         }
         for (int i = 0; i < PhysicalObjectManager.GetInstance._movingObjects.Count; i++)
         {
-            Debug.Log(i);
             Moving move = PhysicalObjectManager.GetInstance._movingObjects[i];
             if(move == this)
             {
-                Debug.Log(move);
                 continue;
             }
-            /*if (Collide(direction, collisionPointRU, collisionPointLD, move.gameObject) && !hasCollided)
+            float size = Values.Multiply(transform.localScale, Values.Absolute(direction.normalized) + Vector3.forward).magnitude;
+            Vector3 collisionPointStart = transform.position + Values.Multiply(transform.localScale / 2, direction.normalized);
+            for (float j = 0.0f; j < size; j += _collidePrecision)
             {
-                hasCollided = true;
-            }*/
-            if ((Collide(direction, collisionPoint, move.gameObject)) && !hasCollided)
-            {
-                hasCollided = true;
+                /*//*
+                if (Collide(direction, collisionPointRU, collisionPointLD, move.gameObject) && !hasCollided)
+                {
+                    hasCollided = true;
+                }
+                /*/
+                if ((Collide(direction, collisionPointStart, move.gameObject)) && !hasCollided)
+                {
+                    hasCollided = true;
+                }//*/
+                collisionPointStart += (Vector3.one - Values.Absolute(direction.normalized) + Vector3.forward) * _collidePrecision;
             }
         }
         _isFalling = !hasCollided;
@@ -126,10 +138,18 @@ public class Moving : MonoBehaviour {
         Vector3 LD = other.transform.position - other.transform.localScale / 2;
         if (IsPointInSquare(collisionPoint, RU, LD))
         {
+            if(Values.Absolute(direction.normalized) == Vector3.right)
+            {
+                Debug.Log("Debut");
+            }
             transform.position = (transform.position - Values.Multiply(transform.position, -direction.normalized))
                 + Values.Multiply(transform.localScale / 2 + other.transform.localScale / 2, -direction.normalized)
                 + Values.Multiply(other.transform.position, Values.Absolute(direction.normalized));
-            _velocity -= Values.Multiply(_velocity, - direction.normalized);
+            _velocity += Values.Multiply(_velocity, direction.normalized);
+            if (Values.Absolute(direction.normalized) == Vector3.right)
+            {
+                Debug.Log("Fin");
+            }
             return true;
         }
         return false;
