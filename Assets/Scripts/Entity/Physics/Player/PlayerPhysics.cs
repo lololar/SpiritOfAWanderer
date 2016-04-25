@@ -35,7 +35,7 @@ public class PlayerPhysics : Moving {
 
     void Jump()
     {
-        AddForce(Vector3.up * _jumpPower * _timeBetInputHandle);
+        AddForce(Vector3.up * _jumpPower);
     }
 
     void Move(float horizontal)
