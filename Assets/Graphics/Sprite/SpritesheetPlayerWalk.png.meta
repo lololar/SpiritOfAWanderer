@@ -1,0 +1,331 @@
+fileFormatVersion: 2
+guid: 8be3d359f0da83a49914dd65b24dabb8
+timeCreated: 1461760049
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: SpritesheetPlayerWalk_0
+    21300002: SpritesheetPlayerWalk_1
+    21300004: SpritesheetPlayerWalk_2
+    21300006: SpritesheetPlayerWalk_3
+    21300008: SpritesheetPlayerWalk_4
+    21300010: SpritesheetPlayerWalk_5
+    21300012: SpritesheetPlayerWalk_6
+    21300014: SpritesheetPlayerWalk_7
+    21300016: SpritesheetPlayerWalk_8
+    21300018: SpritesheetPlayerWalk_9
+    21300020: SpritesheetPlayerWalk_10
+    21300022: SpritesheetPlayerWalk_11
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: SpritesheetPlayerWalk_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 170
+        width: 100
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 44, y: 18}
+        - {x: 40, y: 24}
+        - {x: 28, y: 21}
+        - {x: 14, y: 82}
+        - {x: 11, y: 84}
+        - {x: -13, y: 84}
+        - {x: -29, y: 71}
+        - {x: -43, y: -25}
+        - {x: -43, y: -80}
+        - {x: -18, y: -83}
+        - {x: -14, y: -80}
+        - {x: -15, y: -70}
+        - {x: -12, y: -85}
+        - {x: 22, y: -85}
+        - {x: 25, y: -82}
+        - {x: 22, y: -71}
+        - {x: 44, y: 6}
+    - name: SpritesheetPlayerWalk_1
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 170
+        width: 100
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 45, y: -26}
+        - {x: 45, y: 50}
+        - {x: 24, y: 85}
+        - {x: -28, y: 85}
+        - {x: -28, y: -79}
+        - {x: -14, y: -85}
+        - {x: 18, y: -85}
+        - {x: 21, y: -82}
+        - {x: 23, y: -76}
+        - {x: 15, y: -70}
+    - name: SpritesheetPlayerWalk_2
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 170
+        width: 100
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -21, y: 85}
+        - {x: -21, y: -85}
+        - {x: 20, y: -85}
+        - {x: 44, y: -32}
+        - {x: 44, y: 51}
+        - {x: 23, y: 85}
+    - name: SpritesheetPlayerWalk_3
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 170
+        width: 100
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: -72}
+        - {x: 8, y: -74}
+        - {x: 13, y: -76}
+        - {x: 20, y: -76}
+        - {x: 37, y: -74}
+        - {x: 41, y: -44}
+        - {x: 41, y: 52}
+        - {x: 19, y: 85}
+        - {x: -9, y: 85}
+        - {x: -16, y: 76}
+        - {x: -22, y: -25}
+        - {x: -22, y: -85}
+        - {x: 15, y: -85}
+        - {x: 12, y: -78}
+        - {x: 7, y: -73}
+        - {x: 4, y: -72}
+    - name: SpritesheetPlayerWalk_4
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 170
+        width: 100
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -17, y: 85}
+        - {x: -36, y: -67}
+        - {x: -36, y: -77}
+        - {x: -28, y: -85}
+        - {x: 36, y: -85}
+        - {x: 40, y: -66}
+        - {x: 40, y: 85}
+    - name: SpritesheetPlayerWalk_5
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 170
+        width: 100
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -22, y: 84}
+        - {x: -39, y: -6}
+        - {x: -39, y: -84}
+        - {x: -37, y: -85}
+        - {x: 35, y: -85}
+        - {x: 40, y: -82}
+        - {x: 41, y: -81}
+        - {x: 41, y: 84}
+    - name: SpritesheetPlayerWalk_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 100
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 16, y: 83}
+        - {x: -7, y: 83}
+        - {x: -11, y: 82}
+        - {x: -15, y: 74}
+        - {x: -16, y: 62}
+        - {x: -16, y: 60}
+        - {x: -49, y: 27}
+        - {x: -49, y: -83}
+        - {x: 27, y: -83}
+        - {x: 33, y: -71}
+        - {x: 49, y: -21}
+        - {x: 49, y: 56}
+    - name: SpritesheetPlayerWalk_7
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 0
+        width: 100
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 48, y: 16}
+        - {x: 48, y: 27}
+        - {x: 35, y: 31}
+        - {x: 23, y: 84}
+        - {x: 17, y: 85}
+        - {x: -14, y: 85}
+        - {x: -26, y: 75}
+        - {x: -29, y: 33}
+        - {x: -29, y: -81}
+        - {x: -5, y: -85}
+        - {x: 20, y: -85}
+        - {x: 24, y: -75}
+        - {x: 15, y: -71}
+        - {x: 47, y: 11}
+    - name: SpritesheetPlayerWalk_8
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 0
+        width: 100
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -11, y: 85}
+        - {x: -20, y: 83}
+        - {x: -21, y: 50}
+        - {x: -21, y: -21}
+        - {x: -19, y: -85}
+        - {x: 27, y: -85}
+        - {x: 48, y: -3}
+        - {x: 48, y: 51}
+        - {x: 19, y: 85}
+    - name: SpritesheetPlayerWalk_9
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 0
+        width: 100
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -15, y: 85}
+        - {x: -25, y: 72}
+        - {x: -28, y: 24}
+        - {x: -28, y: -84}
+        - {x: -22, y: -85}
+        - {x: 42, y: -85}
+        - {x: 42, y: 85}
+    - name: SpritesheetPlayerWalk_10
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 0
+        width: 100
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: -44}
+        - {x: -8, y: -85}
+        - {x: 24, y: -85}
+        - {x: 26, y: -83}
+        - {x: 27, y: -76}
+        - {x: 19, y: -71}
+        - {x: 42, y: -9}
+        - {x: 42, y: 44}
+        - {x: 24, y: 85}
+        - {x: -29, y: 85}
+        - {x: -42, y: 9}
+        - {x: -42, y: -83}
+        - {x: -26, y: -85}
+        - {x: -11, y: -85}
+        - {x: -10, y: -82}
+        - {x: -9, y: -78}
+        - {x: -14, y: -71}
+    - name: SpritesheetPlayerWalk_11
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 0
+        width: 100
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 21, y: 85}
+        - {x: -21, y: 85}
+        - {x: -21, y: -85}
+        - {x: 12, y: -85}
+        - {x: 23, y: -75}
+        - {x: 42, y: -32}
+        - {x: 42, y: 54}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -16,7 +16,7 @@ public class Moving : MonoBehaviour {
     public bool _isFalling = true;
     public bool _isMoving = false;
 
-    Renderer _render;
+    Collider _render;
     
     public Coroutine _moveCor;
     public Coroutine _collCor;
@@ -25,7 +25,7 @@ public class Moving : MonoBehaviour {
     private int _ignoreBackground;
 
     public virtual void Start () {
-        _render = GetComponent<Renderer>();
+        _render = GetComponent<Collider>();
         _size = _render.bounds.size;
         _ignoreBackground = 1 << LayerMask.NameToLayer("Background");
         _ignoreBackground = ~_ignoreBackground;
