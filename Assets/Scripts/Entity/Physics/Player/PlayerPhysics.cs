@@ -6,6 +6,7 @@ public class PlayerPhysics : Moving {
     public float _timeBetInputHandle = 0.1f;
     public float _jumpPower = 5.0f;
     public float _speed = 5.0f;
+    public float _maxSpeed;
 
     public override void Start()
     {
@@ -20,8 +21,8 @@ public class PlayerPhysics : Moving {
             float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");
             bool isJumping = Input.GetButton("Jump");
-
-            if(isJumping && !_isFalling)
+            
+            if (isJumping && !_isFalling)
             {
                 Jump();
             }
@@ -33,8 +34,18 @@ public class PlayerPhysics : Moving {
         }
     }
 
+    protected override void MoveAction()
+    {
+        base.MoveAction();
+        if (Mathf.Abs(rigid.velocity.x) > _maxSpeed)
+        {
+            rigid.velocity = new Vector2(Mathf.Clamp(rigid.velocity.x, -_maxSpeed, _maxSpeed), rigid.velocity.y);
+        }
+    }
+
     void Jump()
     {
+        _isFalling = true;
         AddForce(Vector3.up * _jumpPower);
     }
 

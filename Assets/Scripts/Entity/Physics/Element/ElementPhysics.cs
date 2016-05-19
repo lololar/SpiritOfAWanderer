@@ -7,4 +7,17 @@ public class ElementPhysics : Moving {
     {
         base.Start();
     }
+
+    protected override void MoveAction()
+    {
+        base.MoveAction();
+        if (rigid.mass > 1.0f && _isFalling)
+        {
+            rigid.mass = 1.0f;
+        }
+        else if (rigid.mass <= 1.0f && !_isFalling)
+        {
+            rigid.mass = 100.0f;
+        }
+    }
 }
