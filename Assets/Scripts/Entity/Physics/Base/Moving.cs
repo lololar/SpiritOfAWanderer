@@ -51,62 +51,6 @@ public class Moving : MonoBehaviour
         rigid.AddForce(force);
     }
 
-    /*
-        public float _tileSize = 0.16f;
-        public float _mass = 1.0f;
-
-        public float _slow = 1.0f;
-
-        public Vector3 _velocity;
-
-        public virtual void Start () {
-            _moveCor = StartCoroutine(MovePhysics());
-            collidePoint = new bool[(int)CollidePoint.END];
-        }
-
-        private IEnumerator MovePhysics()
-        {
-            while (_isAlive)
-            {
-                MoveAction();
-                yield return new WaitForSeconds(_timeBetweenPhysicsFrames);
-            }
-        }
-
-        private void MoveAction()
-        {
-            if(_isFalling)
-            {
-                _velocity.y = _velocity.y + GameManager._gravity.y * _timeBetweenPhysicsFrames * _mass;
-            }
-            else
-            {
-                _velocity.y = 0.0f;
-            }
-            if(_velocity.x > 0 && collidePoint[(int)CollidePoint.RIGHT])
-            {
-                _velocity.x = 0.0f;
-            }
-            if (_velocity.x < 0 && collidePoint[(int)CollidePoint.LEFT])
-            {
-                _velocity.x = 0.0f;
-            }
-            if (Mathf.Abs(_velocity.x) < Values.EPSYLON)
-            {
-                _velocity.x = 0.0f;
-            }
-            else
-            {
-                _velocity.x = _velocity.x - _velocity.x / _slow * _timeBetweenPhysicsFrames;
-            }
-            transform.position += _velocity * _timeBetweenPhysicsFrames;
-        }
-
-    protected void AddForce(Vector3 force)
-    {
-        _velocity += force;
-    }*/
-
     void OnCollisionEnter2D(Collision2D coll)
     {
         int collideU = 0;

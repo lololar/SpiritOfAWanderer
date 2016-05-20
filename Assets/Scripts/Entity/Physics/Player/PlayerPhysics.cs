@@ -1,6 +1,48 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public class PlayerManager
+{
+    public enum GameMode
+    {
+        MENU,
+        PAUSE,
+        PLAYING,
+        SPIRITING,
+    }
+
+    private static PlayerManager Instance;
+
+    public static PlayerManager GetInstance
+    {
+        get
+        {
+            if (Instance == null)
+            {
+                Awake();
+            }
+            return Instance;
+        }
+    }
+
+    static void Awake()
+    {
+        Instance = new PlayerManager();
+        Instance._player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerPhysics>();
+        Instance._spirit = GameObject.FindGameObjectWithTag("Spirit").GetComponent<Spirit>();
+    }
+
+    public PlayerPhysics _player;
+    public Spirit _spirit;
+    public GameMode _mode = GameMode.SPIRITING;
+
+    public void Change(GameMode game)
+    {
+        _mode = game;
+    }
+
+}
+
 public class PlayerPhysics : Moving {
 
     public float _timeBetInputHandle = 0.1f;
@@ -18,17 +60,21 @@ public class PlayerPhysics : Moving {
     {
         while(_isAlive)
         {
-            float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");
-            bool isJumping = Input.GetButton("Jump");
-            
-            if (isJumping && !_isFalling)
+            if (PlayerManager.GetInstance._mode == PlayerManager.GameMode.PLAYING)
             {
-                Jump();
-            }
-            if(Mathf.Abs(h) > 0.3f)
-            {
-                Move(h);
+                _timeBetInputHandle = Time.deltaTime;
+                float h = Input.GetAxis("Horizontal");
+                float v = Input.GetAxis("Vertical");
+                bool isJumping = Input.GetButton("Jump");
+
+                if (isJumping && !_isFalling)
+                {
+                    Jump();
+                }
+                if (Mathf.Abs(h) > 0.3f)
+                {
+                    Move(h);
+                }
             }
             yield return new WaitForSeconds(_timeBetInputHandle);
         }

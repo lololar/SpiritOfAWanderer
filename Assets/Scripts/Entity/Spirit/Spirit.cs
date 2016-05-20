@@ -23,6 +23,7 @@ public class Spirit : MonoBehaviour
 
     Renderer render;
     bool playerControlled;
+    private Coroutine _changeMode;
 
     Color GetColor(Texture2D tex)
     {
@@ -31,7 +32,7 @@ public class Spirit : MonoBehaviour
         {
             for (int j = 0; j < tex.height; j++)
             {
-                if(tex.GetPixel(i, j).a > 0.8f)
+                if (tex.GetPixel(i, j).a > 0.8f)
                     color = Color.Lerp(color, tex.GetPixel(i, j), 0.5f);
             }
         }
@@ -53,31 +54,44 @@ public class Spirit : MonoBehaviour
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
-
-        //StartCoroutine(Possess());
-
     }
 
     void Update()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        bool hitBackground = Physics.Raycast(ray, out hit, float.PositiveInfinity, _background);
-        transform.position = hit.point;
-        if (Input.GetButtonDown("Possession"))
+        if (PlayerManager.GetInstance._mode == PlayerManager.GameMode.SPIRITING)
         {
-            if (_possessed)
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            bool hitBackground = Physics.Raycast(ray, out hit, float.PositiveInfinity, _background);
+            Debug.Log(hit.transform.tag);
+            if (!hit.transform.CompareTag("NoVision"))
             {
-                Unpossession();
-            }
-            else if (hitBackground && !_possessed)
-            {
-                Debug.Log("Try Possession");
-                RaycastHit2D hit2;
-                Debug.DrawRay(hit.point, Vector3.forward, Color.black, 1f);
-                if (hit2 = Physics2D.Raycast(hit.point - Vector3.forward * 30.0f, Vector3.forward, 60.0f, _possessible))
+                transform.position = hit.point;
+                if (Input.GetButtonDown("Possession"))
                 {
-                    Possession(hit2.transform);
+                    if (_possessed)
+                    {
+                        Unpossession();
+                    }
+                    else if (hitBackground && !_possessed)
+                    {
+                        RaycastHit2D hit2;
+                        Debug.DrawRay(hit.point, Vector3.forward, Color.black, 1f);
+                        if (hit2 = Physics2D.Raycast(hit.point - Vector3.forward * 30.0f, Vector3.forward, 60.0f, _possessible))
+                        {
+                            Possession(hit2.transform);
+                        }
+                    }
+                }
+            }
+        }
+        else if (PlayerManager.GetInstance._mode == PlayerManager.GameMode.PLAYING)
+        {
+            if (Input.GetButtonDown("Possession"))
+            {
+                if (_possessed)
+                {
+                    Unpossession();
                 }
             }
         }
@@ -86,7 +100,6 @@ public class Spirit : MonoBehaviour
     private void Possession(Transform trans)
     {
         _possessed = trans;
-        _possessed.GetComponent<Rigidbody2D>().isKinematic = true;
         _possessedParent = _possessed.parent;
         _possessed.parent = transform;
         render.enabled = false;
@@ -102,7 +115,6 @@ public class Spirit : MonoBehaviour
         _possessedParent = null;
         Transform trans = _possessed;
         _possessed = null;
-        render.enabled = true;
 
 
         Deconstruction(trans, false);
@@ -123,6 +135,31 @@ public class Spirit : MonoBehaviour
             default:
                 break;
         }
+
+        _changeMode = StartCoroutine(ChangeGameMode(col, possession, trans));
+    }
+
+    IEnumerator ChangeGameMode(int col, bool possession, Transform trans)
+    {
+        PlayerManager.GameMode gameMode = PlayerManager.GameMode.PAUSE;
+        if (col == (int)EntityColor.PLAYER)
+        {
+            gameMode = PlayerManager.GetInstance._mode;
+            PlayerManager.GetInstance.Change(PlayerManager.GameMode.PAUSE);
+            if (possession)
+            {
+                AtelierManager.GetInstance._change.Change(AtelierManager.GetInstance._change._currentRoom);
+            }
+            else
+            {
+                AtelierManager.GetInstance._change.Change(ChangeAtelier.CameraPosition.GLOBAL);
+            }
+        }
+        else
+        {
+            trans.GetComponent<Rigidbody2D>().isKinematic = possession;
+        }
+
         if (possession)
         {
             _deconstruction.GetComponent<ParticleAttractor>().startColor = color;
@@ -137,5 +174,22 @@ public class Spirit : MonoBehaviour
             _deconstruction.GetComponent<ParticleAttractor>().attractor = transform;
             _deconstruction.Play();
         }
+
+        yield return new WaitForSeconds(_deconstruction.duration);
+
+        render.enabled = !possession;
+
+        if (col == (int)EntityColor.PLAYER)
+        {
+            if (gameMode == PlayerManager.GameMode.PLAYING)
+            {
+                PlayerManager.GetInstance.Change(PlayerManager.GameMode.SPIRITING);
+            }
+            else if (gameMode == PlayerManager.GameMode.SPIRITING)
+            {
+                PlayerManager.GetInstance.Change(PlayerManager.GameMode.PLAYING);
+            }
+        }
+
     }
 }
