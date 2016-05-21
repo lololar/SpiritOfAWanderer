@@ -93,6 +93,7 @@ public class Moving : MonoBehaviour
         {
             collidePoint[(int)CollidePoint.DOWN] = true;
             _isFalling = false;
+            Land();
         }
         if (collideR == 2)
         {
@@ -102,6 +103,11 @@ public class Moving : MonoBehaviour
         {
             collidePoint[(int)CollidePoint.LEFT] = true;
         }
+    }
+
+    protected virtual void Land()
+    {
+        
     }
 
     void OnCollisionExit2D(Collision2D coll)

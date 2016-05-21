@@ -50,8 +50,13 @@ public class PlayerPhysics : Moving {
     public float _speed = 5.0f;
     public float _maxSpeed;
 
+    public Animator animator;
+    public SpriteRenderer _renderer;
+
     public override void Start()
     {
+        animator = GetComponent<Animator>();
+        _renderer = GetComponent<SpriteRenderer>();
         StartCoroutine(InputHandler());
         base.Start();
     }
@@ -73,8 +78,29 @@ public class PlayerPhysics : Moving {
                 }
                 if (Mathf.Abs(h) > 0.3f)
                 {
+                    if (!_isFalling)
+                    {
+                        animator.Play("Walk");
+                        animator.SetBool("Walk", true);
+                        if (h > 0)
+                        {
+                            _renderer.flipX = false;
+                        }
+                        else
+                        {
+                            _renderer.flipX = true;
+                        }
+                    }
                     Move(h);
                 }
+                else
+                {
+                    animator.SetBool("Walk", false);
+                }
+            }
+            else
+            {
+                animator.SetBool("Walk", false);
             }
             yield return new WaitForSeconds(_timeBetInputHandle);
         }
@@ -83,6 +109,7 @@ public class PlayerPhysics : Moving {
     protected override void MoveAction()
     {
         base.MoveAction();
+
         if (Mathf.Abs(rigid.velocity.x) > _maxSpeed)
         {
             rigid.velocity = new Vector2(Mathf.Clamp(rigid.velocity.x, -_maxSpeed, _maxSpeed), rigid.velocity.y);
@@ -92,7 +119,14 @@ public class PlayerPhysics : Moving {
     void Jump()
     {
         _isFalling = true;
+        animator.Play("Jump");
         AddForce(Vector3.up * _jumpPower);
+    }
+
+    protected override void Land()
+    {
+        base.Land();
+        animator.Play("Land");
     }
 
     void Move(float horizontal)
