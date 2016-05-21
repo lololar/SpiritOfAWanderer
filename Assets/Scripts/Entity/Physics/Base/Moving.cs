@@ -79,12 +79,6 @@ public class Moving : MonoBehaviour
             }
         }
 
-        /*Debug.Log("COLLSION");
-        Debug.Log("UP : " + collideU);
-        Debug.Log("DOWN : " + collideD);
-        Debug.Log("RIGHT : " + collideR);
-        Debug.Log("LEFT : " + collideL);*/
-
         if (collideU == 2)
         {
             collidePoint[(int)CollidePoint.UP] = true;
@@ -137,12 +131,6 @@ public class Moving : MonoBehaviour
                 collideL++;
             }
         }
-
-        /*Debug.Log("COLLSION");
-        Debug.Log("UP : " + collideU);
-        Debug.Log("DOWN : " + collideD);
-        Debug.Log("RIGHT : " + collideR);
-        Debug.Log("LEFT : " + collideL);*/
 
         if (collideU == 2)
         {

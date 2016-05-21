@@ -75,7 +75,6 @@ public class Spirit : MonoBehaviour
                     else if (hitBackground && !_possessed)
                     {
                         RaycastHit2D hit2;
-                        Debug.DrawRay(hit.point, Vector3.forward, Color.black, 1f);
                         if (hit2 = Physics2D.Raycast(hit.point - Vector3.forward * 30.0f, Vector3.forward, 60.0f, _possessible))
                         {
                             Possession(hit2.transform);

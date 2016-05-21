@@ -71,10 +71,12 @@ public class PlayerPhysics : Moving {
 
     public Animator animator;
     public SpriteRenderer _renderer;
+    ParticleSystem _landing;
 
     public override void Start()
     {
         animator = GetComponent<Animator>();
+        _landing = transform.FindChild("Landing").GetComponent<ParticleSystem>();
         _renderer = GetComponent<SpriteRenderer>();
         StartCoroutine(InputHandler());
         base.Start();
@@ -149,6 +151,7 @@ public class PlayerPhysics : Moving {
     protected override void Land()
     {
         base.Land();
+        _landing.Play();
         animator.SetTrigger("Land");
     }
 

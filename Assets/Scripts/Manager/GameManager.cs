@@ -18,6 +18,15 @@ public class GameManager : Singleton<GameManager> {
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+            
+        }
         switch (_state)
         {
             case GameState.BEGIN:
