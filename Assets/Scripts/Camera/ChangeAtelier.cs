@@ -56,8 +56,7 @@ public class ChangeAtelier : MonoBehaviour {
     public float _zoomAtelier;
     public float _zoomGlobal;
     public float _delay = 3.0f;
-
-    // Use this for initialization
+    
     void Start () {
 
         _camera = GetComponent<Camera>();
@@ -72,13 +71,6 @@ public class ChangeAtelier : MonoBehaviour {
 
         RemoveBlockView(0);
         Change(CameraPosition.GLOBAL);
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-
 
 	}
 
@@ -99,8 +91,10 @@ public class ChangeAtelier : MonoBehaviour {
             case CameraPosition.SEVENTH:
             case CameraPosition.EIGHTH:
             case CameraPosition.NINTH:
-            case CameraPosition.END:
                 StartCoroutine(LerpPosition(_ateliersPositions[(int)position].position, _zoomAtelier, (int)position));
+                break;
+            case CameraPosition.END:
+                GameManager.GetInstance.EndGame();
                 break;
             default:
                 break;

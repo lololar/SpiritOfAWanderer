@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Checkpoint : MonoBehaviour {
-    
+public class Door : MonoBehaviour {
+
+    public GameObject _linkedDoor;
+    public ChangeAtelier.CameraPosition _linkedRoom;
+
     void OnTriggerEnter2D(Collider2D coll)
     {
         if (coll.CompareTag("Player"))
         {
-            CheckpointManager.GetInstance.ChangeCheckpoint(gameObject);
+            DoorManager.GetInstance.EnterDoor(gameObject);
         }
     }
 
@@ -15,7 +18,7 @@ public class Checkpoint : MonoBehaviour {
     {
         if (coll.CompareTag("Player"))
         {
-            CheckpointManager.GetInstance.ExitCheckpoint(gameObject);
+            DoorManager.GetInstance.ExitDoor(gameObject);
         }
     }
 }

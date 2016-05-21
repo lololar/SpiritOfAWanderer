@@ -24,6 +24,7 @@ public class CheckpointManager : MonoBehaviour {
     }
 
     public List<GameObject> _checkpoints;
+    public GameObject _lastCheckpoint;
     public GameObject _currentCheckpoint;
 
 	// Use this for initialization
@@ -37,7 +38,15 @@ public class CheckpointManager : MonoBehaviour {
     {
         if (_checkpoints.Contains(chck))
         {
-            _currentCheckpoint = chck;
+            _lastCheckpoint = _currentCheckpoint = chck;
+        }
+    }
+
+    public void ExitCheckpoint(GameObject chck)
+    {
+        if (_checkpoints.Contains(chck) && _currentCheckpoint == chck)
+        {
+            _currentCheckpoint = null;
         }
     }
 }

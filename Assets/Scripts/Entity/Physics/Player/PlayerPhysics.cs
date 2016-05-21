@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class PlayerManager
 {
@@ -9,6 +10,7 @@ public class PlayerManager
         PAUSE,
         PLAYING,
         SPIRITING,
+        END,
     }
 
     private static PlayerManager Instance;
@@ -30,11 +32,28 @@ public class PlayerManager
         Instance = new PlayerManager();
         Instance._player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerPhysics>();
         Instance._spirit = GameObject.FindGameObjectWithTag("Spirit").GetComponent<Spirit>();
+        Instance._endScreen = GameObject.FindGameObjectWithTag("End");
+        Instance._endScreen.SetActive(false);
+        Instance._menuScreen = GameObject.FindGameObjectWithTag("Menu");
+    }
+
+    public void Play()
+    {
+        _menuScreen.SetActive(false);
+        _mode = GameMode.SPIRITING;
+}
+
+    public void End()
+    {
+        _endScreen.SetActive(true);
+        _mode = GameMode.END;
     }
 
     public PlayerPhysics _player;
     public Spirit _spirit;
-    public GameMode _mode = GameMode.SPIRITING;
+    public GameObject _menuScreen;
+    public GameObject _endScreen;
+    public GameMode _mode = GameMode.MENU;
 
     public void Change(GameMode game)
     {
@@ -67,14 +86,18 @@ public class PlayerPhysics : Moving {
         {
             if (PlayerManager.GetInstance._mode == PlayerManager.GameMode.PLAYING)
             {
-                _timeBetInputHandle = Time.deltaTime;
                 float h = Input.GetAxis("Horizontal");
                 float v = Input.GetAxis("Vertical");
                 bool isJumping = Input.GetButton("Jump");
+                bool isActivatingDoor = Input.GetButtonDown("Door");
 
                 if (isJumping && !_isFalling)
                 {
                     Jump();
+                }
+                if (isActivatingDoor && Mathf.Abs(h) < 0.3f)
+                {
+                    DoorManager.GetInstance.WarpToLinkedDoor(gameObject);
                 }
                 if (Mathf.Abs(h) > 0.3f)
                 {
@@ -126,7 +149,7 @@ public class PlayerPhysics : Moving {
     protected override void Land()
     {
         base.Land();
-        animator.Play("Land");
+        animator.SetTrigger("Land");
     }
 
     void Move(float horizontal)

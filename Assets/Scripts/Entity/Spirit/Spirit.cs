@@ -63,8 +63,7 @@ public class Spirit : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             bool hitBackground = Physics.Raycast(ray, out hit, float.PositiveInfinity, _background);
-            Debug.Log(hit.transform.tag);
-            if (!hit.transform.CompareTag("NoVision"))
+            if (hit.transform != null && !hit.transform.CompareTag("NoVision"))
             {
                 transform.position = hit.point;
                 if (Input.GetButtonDown("Possession"))
@@ -89,7 +88,7 @@ public class Spirit : MonoBehaviour
         {
             if (Input.GetButtonDown("Possession"))
             {
-                if (_possessed)
+                if (_possessed && CheckpointManager.GetInstance._currentCheckpoint)
                 {
                     Unpossession();
                 }

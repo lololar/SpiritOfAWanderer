@@ -48,7 +48,7 @@ public class Moving : MonoBehaviour
 
     protected void AddForce(Vector3 force)
     {
-        rigid.AddForce(force);
+        rigid.velocity = rigid.velocity + new Vector2(force.x, force.y);
     }
 
     void OnCollisionEnter2D(Collision2D coll)
